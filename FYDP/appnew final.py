@@ -11,10 +11,22 @@ def encode_feature(value, column_name):
     le.fit(tablets_data[column_name])
     return le.transform([value])[0]
 st.header ('Dissolution Rate Prediction in ML Model')
-file_path = r"c:\Users\fatim\Downloads\dissolution_rate_samples.xlsx"
+import streamlit as st
+import pandas as pd
 
+# Upload the file
+uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
 
-tablets_data = pd.read_excel(file_path, engine="openpyxl") 
+# Check if file is uploaded
+if uploaded_file is not None:
+    tablets_data = pd.read_excel(uploaded_file, engine="openpyxl")
+    
+    # Optional: Show preview
+    st.success("File uploaded successfully!")
+    st.write(tablets_data.head())
+else:
+    st.warning("Please upload an Excel file to continue.")
+
 
 Drug_Form=st.selectbox('Select Drug Form', tablets_data ['Drug Form'].unique())
 Particle_Size=st.slider('Select Particle Size', 8.0, 10.0)
